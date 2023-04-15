@@ -1,14 +1,14 @@
 def solution(numbers, target):
     answer = 0
-    def dfs(idx, result):
-        nonlocal answer
-        if idx == len(numbers)-1:
-            if result == target:
-                answer += 1
-            return
+    queue = [[numbers[0], 0], [-numbers[0], 0]]
+    while queue:
+        val, idx = queue.pop()
+        idx += 1
+        if idx < len(numbers):
+            queue.append([val + numbers[idx], idx])
+            queue.append([val - numbers[idx], idx])
         else:
-            idx += 1
-            dfs(idx, result+numbers[idx])
-            dfs(idx, result-numbers[idx])
-    dfs(-1, 0)
+            if val == target:
+                answer += 1
+        
     return answer
