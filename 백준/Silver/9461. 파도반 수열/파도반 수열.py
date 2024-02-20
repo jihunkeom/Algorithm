@@ -1,9 +1,13 @@
-dp = [0] * 101
-dp[:10] = [1, 1, 1, 2, 2, 3, 4, 5, 7, 9]
+import sys
 
-T = int(input())
+T = int(sys.stdin.readline())
+dp = [0] * 101
 for _ in range(T):
-    n = int(input())
-    for i in range(9, n):
+    N = int(sys.stdin.readline())
+    dp[1] = 1
+    dp[2] = 1
+    dp[3] = 1
+    for i in range(4, N+1):
         dp[i] = dp[i-2] + dp[i-3]
-    print(dp[n-1])
+        
+    print(dp[N])
