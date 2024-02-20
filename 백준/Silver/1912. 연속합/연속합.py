@@ -1,15 +1,16 @@
 import sys
 
 n = int(sys.stdin.readline())
-nums = list(map(int, sys.stdin.readline().strip().split()))
+arr = list(map(int, sys.stdin.readline().split()))
 
-dp = [0] * n
-dp[0] = nums[0]
-
+dp = [-1000] * (n)
+dp[0] = arr[0]
 for i in range(1, n):
-    dp[i] = max(dp[i-1]+nums[i], 0)
+    tmp = arr[i] + dp[i-1]
+    if tmp > arr[i] and dp[i-1]:
+        dp[i] = tmp
+    else:
+        dp[i] = arr[i]
 
-if max(dp) > 0:
-    print(max(dp))
-else:
-    print(max(nums))
+    
+print(max(dp))
