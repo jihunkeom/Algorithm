@@ -1,27 +1,28 @@
+import sys
 from collections import deque
+sys.setrecursionlimit(10**6)
 
-n, m = map(int, input().split())
-adj = [[] for _ in range(n+1)]
+n, m = list(map(int, sys.stdin.readline().split()))
 
+my_map = [[] for _ in range(n+1)]
+visited = [False] * (n+1)
 for _ in range(m):
-    a, b = map(int, input().split())
-    adj[a].append(b)
-    adj[b].append(a)
-
-def bfs(start):
-    queue = deque([start])
-    while queue:
-        cur = queue.popleft()
-        
-        if not visited[cur]:
-            visited[cur] = True
-            queue.extend(adj[cur])
+    a, b = list(map(int, sys.stdin.readline().split()))
+    my_map[a].append(b)
+    my_map[b].append(a)
+    
+def dfs(node):
+    for next_node in my_map[node]:
+        if not visited[next_node]:
+            visited[next_node] = True
+            dfs(next_node)
+            
     return 1
 
-visited = [True] + ([False] * n)
-answer = 0
-while not all(visited):
-    start_node = visited.index(False)
-    answer += bfs(start_node)
-    
-print(answer)
+cc = 0
+for i in range(1, n+1):
+    if not visited[i]:
+        visited[i] = True
+        cc += dfs(i)
+        
+print(cc)
