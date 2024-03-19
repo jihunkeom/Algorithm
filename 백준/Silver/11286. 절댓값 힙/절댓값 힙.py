@@ -4,14 +4,15 @@ import heapq
 input = sys.stdin.readline
 
 n = int(input())
-arr = []
-
+heap = []
 for _ in range(n):
-    x = int(input())
-    if x != 0:
-        heapq.heappush(arr, (abs(x), x))
+    num = int(input())
+    if num < 0:
+        heapq.heappush(heap, (-num, num))
+    elif num > 0:
+        heapq.heappush(heap, (num, num))
+    elif heap:
+        a = heapq.heappop(heap)
+        print(a[1])
     else:
-        if len(arr) == 0:
-            print(0)
-        else:
-            print(heapq.heappop(arr)[1])
+        print(0)
