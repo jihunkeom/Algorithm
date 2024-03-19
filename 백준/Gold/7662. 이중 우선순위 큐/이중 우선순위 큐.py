@@ -1,33 +1,61 @@
 import sys
 import heapq
+
 input = sys.stdin.readline
 
-def pop(heap):
-    while len(heap) > 0:
-        data, id = heapq.heappop(heap)
-        if not deleted[id]:
-            deleted[id] = True
-            return data
-    return None
+t = int(input().rstrip())
 
-for _ in range(int(input())):
-    k = int(input())
-    min_heap = []
-    max_heap = []
-    current = 0
-    deleted = [False] * (k+1)
-    for i in range(k):
-        command = input().split()
-        operator, data = command[0], int(command[1])
-        if operator == "D":
-            if data == -1: pop(min_heap)
-            elif data == 1: pop(max_heap)
-        elif operator == "I":
-            heapq.heappush(min_heap, (data, current))
-            heapq.heappush(max_heap, (-data, current))
-            current += 1
-    max_value = pop(max_heap)
-    if max_value == None: print("EMPTY")
+for _ in range(t):
+    min_queue = []
+    max_queue = []
+    k = int(input().rstrip())
+    dropped = [False] * (k+1)
+    
+    for idx in range(k):
+        op, num = input().rstrip().split()
+        num = float(num)
+        if op == "I":
+            heapq.heappush(min_queue, (num, idx))
+            heapq.heappush(max_queue, (-num, idx))
+            
+        elif op == "D":
+            if num == 1:
+                while True:
+                    if not max_queue:
+                        break
+                    n, i = heapq.heappop(max_queue)
+                    if not dropped[i]:
+                        dropped[i] = True
+                        break
+            else:
+                while True:
+                    if not min_queue:
+                        break
+                    n, i = heapq.heappop(min_queue)
+                    if not dropped[i]:
+                        dropped[i] = True
+                        break
+
+    if max_queue and min_queue:
+        flag = True
+        while True:
+            if not max_queue:
+                flag = False
+                break
+            max_val, i = heapq.heappop(max_queue)
+            if not dropped[i]:
+                break
+        while True:
+            if not min_queue:
+                flag = False
+                break
+            min_val, i = heapq.heappop(min_queue)
+            if not dropped[i]:
+                break
     else:
-        heapq.heappush(min_heap, (-max_value, current))
-        print(-max_value, pop(min_heap))
+        flag = False
+        
+    if flag:
+        print(int(-max_val), int(min_val))
+    else:
+        print("EMPTY")
