@@ -1,28 +1,35 @@
 import sys
-from collections import deque
 sys.setrecursionlimit(10**6)
+input = sys.stdin.readline
 
-n, m = list(map(int, sys.stdin.readline().split()))
+n, m = map(int, input().split())
 
-my_map = [[] for _ in range(n+1)]
-visited = [False] * (n+1)
-for _ in range(m):
-    a, b = list(map(int, sys.stdin.readline().split()))
-    my_map[a].append(b)
-    my_map[b].append(a)
+def find(x):
+    if parents[x] == x:
+        return x
+    else:
+        tmp = find(parents[x])
+        parents[x] = tmp
+        return tmp
+
+def union(x, y):
+    x = find(x)
+    y = find(y)
     
-def dfs(node):
-    for next_node in my_map[node]:
-        if not visited[next_node]:
-            visited[next_node] = True
-            dfs(next_node)
-            
-    return 1
-
-cc = 0
-for i in range(1, n+1):
-    if not visited[i]:
-        visited[i] = True
-        cc += dfs(i)
+    if x < y:
+        parents[y] = x
+    else:
+        parents[x] = y
         
-print(cc)
+    return None
+
+parents = [i for i in range(n+1)]
+
+for _ in range(m):
+    a, b = map(int, input().split())
+    union(a, b)
+
+for i in range(1, n+1):
+    find(i)
+
+print(len(set(parents[1:])))
