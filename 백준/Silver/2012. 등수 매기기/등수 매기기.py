@@ -1,16 +1,16 @@
 import sys
 
-n = int(sys.stdin.readline())
-predict = []
+input = sys.stdin.readline
 
+n = int(input())
+
+arr = []
 for _ in range(n):
-    predict.append(int(sys.stdin.readline()))
+    arr.append(int(input()))
     
-predict = sorted(predict)
-tmp = list(range(1, n+1))
-
+arr.sort()
 answer = 0
-for i in range(n):
-    answer += abs(predict[i] - tmp[i])
-
+for i in range(1, n+1):
+    answer += (abs(i - arr[i-1]))
+    
 print(answer)
