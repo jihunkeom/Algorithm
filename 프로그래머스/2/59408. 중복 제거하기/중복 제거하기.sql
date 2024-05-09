@@ -1,0 +1,3 @@
+-- 코드를 입력하세요
+SELECT COUNT(UNIQUE(NAME))
+FROM ANIMAL_INS;
